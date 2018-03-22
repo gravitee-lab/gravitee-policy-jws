@@ -1,0 +1,18 @@
+{
+  "type" : "object",
+  "id" : "urn:jsonschema:io:gravitee:policy:jws:configuration:JWSPolicyConfiguration",
+  "properties" : {
+    "checkCertificateValidity" : {
+      "title": "Check certificate validity",
+      "description": "Check if the certificate used to sign the JWT is valid with correct 'not_before' and 'not_after' dates.",
+      "type" : "boolean",
+      "default": false
+    },
+    "checkCertificateRevocation" : {
+      "title": "Check if the certificate is revoked",
+      "description": "Check if the certificate used to sign the JWT is not revoked via the CRL Distribution Points. The CRL is stored inside the X509v3 CRL Distribution Extension Points.",
+      "type" : "boolean",
+      "default": false
+    }
+  }
+}

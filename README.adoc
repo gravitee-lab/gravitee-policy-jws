@@ -53,7 +53,6 @@ According to JWS rfc : https://tools.ietf.org/html/rfc7515#section-4.1.10, the J
 The "typ" value "JOSE" can be used by applications to indicate that this object is a JWS or JWE using the JWS Compact Serialization or the JWE Compact Serialization.
 The "typ" value "JOSE+JSON" can be used by applications to indicate that this object is a JWS or JWE  using the JWS JSON Serialization or the JWE JSON Serialization.
 
-
 The "cty" (content type) Header Parameter is used by JWS applications to declare the media type [IANA.MediaTypes] of the secured content (the payload).
 To keep messages compact in common situations, it is RECOMMENDED that senders omit an "application/" prefix of a media type value in a "cty" Header Parameter when no other '/' appears in the media type value.
 
@@ -67,12 +66,19 @@ Here, it's a valid example of JWS Header :
  "typ":"JOSE+JSON",
  "cty":"json",
  "alg":"RS256",
- "x5c":"string"
+ "x5c":"string",
  "kid":"string"
 }
 ----
 
 == Configuration
+
+|===
+|Property |Required |Description |Type |Default
+
+|checkCertificateValidity||Check if the certificate used to sign the JWT is valid with correct 'not_before' and 'not_after' dates|boolean|false.
+|checkCertificateRevocation||Check if the certificate used to sign the JWT is not revoked via the CRL Distribution Points. The CRL is stored inside the X509v3 CRL Distribution Extension Points.|boolean|false
+|===
 
 To validate the token signature, the policy need to use the associated public key set into into gravitee gateway settings, _gravitee.yml_ file.
 
@@ -80,20 +86,17 @@ To validate the token signature, the policy need to use the associated public ke
 ----
 policy:                  
   jws:
-    issuer:
-      my.authorizaztion.server: 
-        default: ssh-rsa myValidationKey anEmail@domain.com
-        kid-2016: ssh-rsa myCurrentValidationKey anEmail@domain.com
+    kid:
+      default: ssh-rsa myValidationKey anEmail@domain.com
+      kid-2016: /filepath/to/pemFile/certificate.pem
 ----
 
 On this mode, the policy will inspect the jwt/jws :
 
 ** header in order to extract the key id (kid attribute) of the public key. If none then we set it as ‘default’.
 
-** claims (payload) in order to extract the issuer (iss attribute)
-
-Thanks to both values, the gateway will be able to retrieve the corresponding public key and JOSE Header with "x5c" (X.509 Certificate Chain) Header Parameter will be used to verify certificate information.
-
+The gateway will be able to retrieve the corresponding public key and the JOSE Header with "x5c" (X.509 Certificate Chain) Header Parameter will be used to verify certificate information
+and check that this JWT was signed using the private key that corresponds to the specified public key.
 
 == Http Status Code
 
