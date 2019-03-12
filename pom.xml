@@ -105,7 +105,7 @@
             <version>${spring.version}</version>
             <scope>provided</scope>
         </dependency>
-        
+
         <!-- Test scope -->
         <dependency>
             <groupId>junit</groupId>
@@ -113,10 +113,10 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
-        
+
         <dependency>
             <groupId>org.mockito</groupId>
-            <artifactId>mockito-all</artifactId>
+            <artifactId>mockito-core</artifactId>
             <version>${mockito.version}</version>
             <scope>test</scope>
         </dependency>

@@ -146,8 +146,6 @@ public class JWSPolicyTest {
         String input = getJsonWebToken("public_key.der", false, null);
 
         when(executionContext.getComponent(Environment.class)).thenReturn(environment);
-        when(configuration.isCheckCertificateValidity()).thenReturn(true);
-        when(configuration.isCheckCertificateRevocation()).thenReturn(false);
         when(environment.getProperty(String.format(PUBLIC_KEY_PROPERTY, KID))).thenReturn(getPemFilePath("full-server.pem"));
 
         // Prepare context
@@ -160,8 +158,6 @@ public class JWSPolicyTest {
     public void shouldTransformInput_malformedJWS() throws Exception {
         String input = loadResource("/io/gravitee/policy/jws/malformed-jws.json");
 
-        when(configuration.isCheckCertificateValidity()).thenReturn(true);
-        when(configuration.isCheckCertificateRevocation()).thenReturn(false);
         // Prepare context
         Buffer ret = jwsPolicy.map(executionContext, policyChain).apply(Buffer.buffer(input));
         verify(policyChain, times(1)).streamFailWith(any());
@@ -173,8 +169,6 @@ public class JWSPolicyTest {
         String input = getJsonWebToken("wrong-public_key.der", true, null);
 
         when(executionContext.getComponent(Environment.class)).thenReturn(environment);
-        when(configuration.isCheckCertificateValidity()).thenReturn(true);
-        when(configuration.isCheckCertificateRevocation()).thenReturn(false);
         when(environment.getProperty(String.format(PUBLIC_KEY_PROPERTY, KID))).thenReturn(getPublicKey());
 
         // Prepare context
@@ -191,8 +185,6 @@ public class JWSPolicyTest {
         String input = getJsonWebToken("public_key.der", true, additionalHeaders);
 
         when(executionContext.getComponent(Environment.class)).thenReturn(environment);
-        when(configuration.isCheckCertificateValidity()).thenReturn(true);
-        when(configuration.isCheckCertificateRevocation()).thenReturn(false);
         when(environment.getProperty(String.format(PUBLIC_KEY_PROPERTY, KID))).thenReturn(getPublicKey());
 
         // Prepare context
@@ -208,8 +200,6 @@ public class JWSPolicyTest {
         String input = getJsonWebToken("public_key.der", true, additionalHeaders);
 
         when(executionContext.getComponent(Environment.class)).thenReturn(environment);
-        when(configuration.isCheckCertificateValidity()).thenReturn(true);
-        when(configuration.isCheckCertificateRevocation()).thenReturn(false);
         when(environment.getProperty(String.format(PUBLIC_KEY_PROPERTY, KID))).thenReturn(getPublicKey());
 
         // Prepare context
